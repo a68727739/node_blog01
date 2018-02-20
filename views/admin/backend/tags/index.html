@@ -1,0 +1,130 @@
+<% include ../../header.html  %>
+<div class="col-sm-5">
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <caption>標籤分類列表</caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>tag名稱</th>
+            <th>創建時間</th>
+            <th>操作</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <% for (var i=0;i< tagList.length;i++) { %>
+
+            <tr>
+                <td><%=tagList[i].id%></td>
+                <td><%=tagList[i].tagname%></td>
+                <td><%=tagList[i].created_at%></td>
+                <td>
+                    <a class="btn btn-primary modify" >修改</a>
+                    <a class="btn btn btn-danger delete" data-id="<%=tagList[i].id%>">刪除</a>
+                </td>
+            </tr>
+
+        <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- 模態框（Modal） -->
+<div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    標籤類別修改
+                </h4>
+            </div>
+            <div class="modal-body" style="height: 100px">
+                <div class="form-group">
+                    <label for="tagname" class="col-sm-2 control-label">標籤名稱</label>
+                    <div class="col-sm-10">
+                        <input type="hidden" name="id" id="id" value="">
+                        <input type="text" class="form-control" id="tagname" name="tagname" placeholder="請輸入標籤名稱" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    關閉
+                </button>
+                <button type="button" class="btn btn-primary submit">
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        //模態框彈出
+        $(".modify").click(function(){
+            var tagname = $(this).parent().prev().prev().text();
+            var id = $(this).parent().prev().prev().prev().text();
+            $("#id").val(id);
+            $("#tagname").val(tagname);
+            $("#myModal").modal('show');
+        });
+        //更新
+        $(".submit").click(function(){
+
+            var id = $("#id").val();
+            var tagname = $("#tagname").val();
+            $.post(
+                    '/tag/updatetag',
+                    {
+                        id:id,
+                        tagname:tagname
+                    },
+                    function(data){
+
+                        if(data.status)
+                        {
+                            $("#myModal").modal('hide');
+                            layer.msg(data.msg, {
+
+                                time: 2000 //20s後自動關閉
+
+                            },function(){
+
+                                window.location.reload()
+                            });
+                        }else{
+                            layer.msg(data.msg);
+                        }
+                    },
+                    "json"
+            );
+        });
+        //刪除
+        $(".delete").click(function(){
+            var id = $(this).data('id');
+            layer.confirm('確定刪除嗎？', {
+                btn: ['確定','取消'] //按鈕
+            }, function(){
+
+
+                layer.msg(id);
+            });
+          });
+
+        $('#myModal').on('hidden.bs.modal', function () {
+
+            $(".modal-body input").val('');
+
+        });
+
+    });
+
+</script>
+<% include ../../footer.html  %>
