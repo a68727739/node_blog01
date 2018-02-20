@@ -6,4 +6,4 @@
 
 * 運行項目 進入blog目錄下面 node ./bin/www 即可運行項目
 
-* 訪問 默認端口是3000，前台訪問localhost:3000 ,後台localhost:3000/admin ,賬號:admin 密碼:admin
+* 訪問 默認端口是3000，前台訪問localhost:3000 ,後台localhost:3000/admin ,帳號:admin 密碼:admin
