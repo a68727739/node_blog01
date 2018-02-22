@@ -1,8 +1,8 @@
 ### 本地環境 導入數據庫文件 blog.sql
 
-* 數據庫賬號密碼修改 在 config目錄下面的 db.js,自行修改即可
+* 資料庫密碼修改 在 config目錄下面的 db.js,自行修改即可
 
-* 安裝nodejs環境 http://nodejs.cn/ 自行下載
+* 安裝nodejs環境
 
 * 運行項目 進入blog目錄下面 node ./bin/www 即可運行項目
 
